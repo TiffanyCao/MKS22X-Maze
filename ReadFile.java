@@ -17,10 +17,23 @@ public class ReadFile {
         //inf stands for the input file
 
         Scanner inf = new Scanner(text);
-
+        int numLines = 0;
+        int numCols = 0;
         while(inf.hasNextLine()){
-            String line = inf.nextLine();
-            System.out.println(line);//hopefully you can do other things with the line
+          numLines++;
+          String line = inf.nextLine();
+          System.out.println(line);//hopefully you can do other things with the line
         }
+        while(inf.hasNextLine()){
+          String character = inf.nextLine();
+          for(int i = 0; i < character.length; i++){
+            numCols++;
+          }
+          System.out.println(character);
+        }
+        System.out.println(numLines);
+        System.out.println(numCols);
+
+
     }
 }
