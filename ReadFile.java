@@ -24,12 +24,14 @@ public class ReadFile {
           String line = inf.nextLine();
           System.out.println(line);//hopefully you can do other things with the line
         }
-        while(inf.hasNextLine()){
-          String character = inf.nextLine();
-          for(int i = 0; i < character.length; i++){
+
+        Scanner inf2 = new Scanner(text);
+        while(inf2.hasNextLine()){
+          numCols = 0;
+          String character = inf2.nextLine();
+          for(int i = 0; i < character.length(); i++){
             numCols++;
           }
-          System.out.println(character);
         }
         System.out.println(numLines);
         System.out.println(numCols);
