@@ -27,22 +27,29 @@ public class Maze{
 
     public Maze(String filename) throws FileNotFoundException{
         //COMPLETE CONSTRUCTOR
-      Scanner text = new Scanner(filename);
+      animate = false;
+      File text = new File(filename);
+      Scanner readFile = new Scanner(text);
       int numLines = 0;
       int numCols = 0;
-      while(text.hasNextLine()){
-        numLines++; //find the row
-        String line = text.nextLine();
-        numCols = line.length(); //find the column
+      while(readFile.hasNextLine()){
+        numLines++; //find the number of rows
+        String line = readFile.nextLine();
+        numCols = line.length(); //find the number of columns
       }
-      Scanner read = new Scanner(filename);
+      int numE = 0;
+      int numS = 0;
+      Scanner read = new Scanner(text);
       maze = new char[numLines][numCols];
       for(int i = 0; i < numLines; i++){ //convert the text into a 2D char array
         String line = read.nextLine();
         for(int y = 0; y < numCols; y++){
+          if(line.charAt(y) == 'E') numE++; //check number of E's
+          if(line.charAt(y) == 'S') numS++; //check number of S's
           maze[i][y] = line.charAt(y);
         }
       }
+      if(numE != 1 || numS != 1) throw new IllegalStateException();
     }
 
     public String toString(){
@@ -91,6 +98,17 @@ public class Maze{
     public int solve(){
 
             //find the location of the S.
+      /*int rowS = 0;
+      int colS = 0;
+      for(int i = 0; i < maze.length; i++){
+        for(int y = 0; y < maze[i].length; y++){
+          if(maze[i][y] == 'S'){
+            rowS = i;
+            colS = y;
+            maze[i][y] =
+          }
+        }
+      }*/
 
 
             //erase the S
@@ -140,8 +158,8 @@ public class Maze{
 
     public static void main(String[] args){
       try{
-        Maze data1 = new Maze("data1.dat");
-        System.out.println(data1);
+        Maze maze1 = new Maze("data1.dat");
+        System.out.println(maze1);
       }catch(FileNotFoundException e){
         System.out.println("File not found");
       }
