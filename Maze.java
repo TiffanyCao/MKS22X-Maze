@@ -87,7 +87,27 @@ public class Maze{
 
     }
 
+    private boolean isFull(){
+      for(int i = 0; i < maze.length; i++){
+        for(int y = 0; y < maze[i].length; y++){
+          if(maze[i][y] != '#' && maze[i][y] != 'E' && maze[i][y] != '.') return false;
+        }
+      }
+    }
 
+    private int[][] move = {{0, -1},
+                            {-1, 0},
+                            {0, 1},
+                            {1, 0}};
+
+    private boolean makeMove(int row, int col, int moveNum){
+      int newRow = row + move[moveNum][0];
+      int newCol = col + move[moveNum][1];
+      if(newRow >= 0 && newRow < maze.length && newCol >= 0 && newCol < maze[0].length){
+           if(maze[newRow][newCol] == ' ') return true;
+         }
+      return false;
+    }
 
     /*Wrapper Solve Function returns the helper function
 
@@ -98,27 +118,18 @@ public class Maze{
     public int solve(){
 
             //find the location of the S.
-      /*int rowS = 0;
+      int rowS = 0;
       int colS = 0;
       for(int i = 0; i < maze.length; i++){
         for(int y = 0; y < maze[i].length; y++){
           if(maze[i][y] == 'S'){
             rowS = i;
             colS = y;
-            maze[i][y] =
+            maze[i][y] = '@'; //erase the S
           }
         }
-      }*/
-
-
-            //erase the S
-
-
-            //and start solving at the location of the s.
-
-            //return solve(???,???);
-            return 0;
-
+      }
+      return solve(rowS, colS, 1); //and start solving at the location of the s.
     }
 
     /*
@@ -138,7 +149,7 @@ public class Maze{
 
         All visited spots that are part of the solution are changed to '@'
     */
-    private int solve(int row, int col){ //you can add more parameters since this is private
+    private int solve(int row, int col, int count){ //you can add more parameters since this is private
 
 
         //automatic animation! You are welcome.
@@ -151,6 +162,15 @@ public class Maze{
         }
 
         //COMPLETE SOLVE
+        if(isFull()) return -1;
+        if(maze[row][col] == 'E') return count;
+        for(int i = 0; i < move.length; i++){
+          if(makeMove(row, col, i)){
+            maze[row + move[i][0]][col + move[i][1]] = '@';
+            count++;
+            solve(row + move[i][0], col + move[i][1], count + 1);
+          }
+        }
 
         return -1; //so it compiles
     }
