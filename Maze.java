@@ -90,9 +90,9 @@ public class Maze{
     private boolean isFull(){
       for(int i = 0; i < maze.length; i++){
         for(int y = 0; y < maze[i].length; y++){
-          if(maze[i][y] != '#' && maze[i][y] != 'E' && maze[i][y] != '.') return false;
+          if(maze[i][y] == '@' || maze[i][y] == ' ') return false;
         }
-      }
+      } return true;
     }
 
     private int[][] move = {{0, -1},
@@ -100,13 +100,22 @@ public class Maze{
                             {0, 1},
                             {1, 0}};
 
-    private boolean makeMove(int row, int col, int moveNum){
-      int newRow = row + move[moveNum][0];
-      int newCol = col + move[moveNum][1];
-      if(newRow >= 0 && newRow < maze.length && newCol >= 0 && newCol < maze[0].length){
-           if(maze[newRow][newCol] == ' ') return true;
+    private boolean makeMove(int row, int col){
+      //int newRow = row + move[moveNum][0];
+      //int newCol = col + move[moveNum][1];
+      if(row >= 0 && row < maze.length && col >= 0 && col < maze[0].length){
+           if(maze[row][col] == ' '){
+             maze[row][col] = '@';
+             return true;
+           }
          }
       return false;
+    }
+
+    private boolean undoMove(int row, int col){
+      if(maze[row][col] != '@') return false;
+      maze[row][col] = '.';
+      return true;
     }
 
     /*Wrapper Solve Function returns the helper function
@@ -125,11 +134,11 @@ public class Maze{
           if(maze[i][y] == 'S'){
             rowS = i;
             colS = y;
-            maze[i][y] = '@'; //erase the S
+            maze[i][y] = ' '; //erase the S
           }
         }
       }
-      return solve(rowS, colS, 1); //and start solving at the location of the s.
+      return solve(rowS, colS); //and start solving at the location of the s.
     }
 
     /*
@@ -149,7 +158,7 @@ public class Maze{
 
         All visited spots that are part of the solution are changed to '@'
     */
-    private int solve(int row, int col, int count){ //you can add more parameters since this is private
+    private int solve(int row, int col){ //you can add more parameters since this is private
 
 
         //automatic animation! You are welcome.
@@ -162,16 +171,15 @@ public class Maze{
         }
 
         //COMPLETE SOLVE
-        if(isFull()) return -1;
+        int count = 0;
+        if(!makeMove(row, col)) return -1;
         if(maze[row][col] == 'E') return count;
         for(int i = 0; i < move.length; i++){
-          if(makeMove(row, col, i)){
-            maze[row + move[i][0]][col + move[i][1]] = '@';
-            count++;
-            solve(row + move[i][0], col + move[i][1], count + 1);
+          if(solve(row + move[i][0], col + move[i][1]) != -1){
+            return 1 + solve(row + move[i][0], col + move[i][1]);
           }
         }
-
+        undoMove(row, col);
         return -1; //so it compiles
     }
 
@@ -179,6 +187,9 @@ public class Maze{
     public static void main(String[] args){
       try{
         Maze maze1 = new Maze("data1.dat");
+        System.out.println(maze1);
+        maze1.setAnimate(true);
+        System.out.println(maze1.solve());
         System.out.println(maze1);
       }catch(FileNotFoundException e){
         System.out.println("File not found");
