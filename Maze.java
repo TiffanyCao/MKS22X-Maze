@@ -171,16 +171,15 @@ public class Maze{
         }
 
         //COMPLETE SOLVE
-        //int count = 0;
-        if(!makeMove(row, col)) return -1;
-        if(maze[row][col] == 'E') return count;
+        if(!makeMove(row, col)) return -1; //if the path cannot be found
+        if(maze[row][col] == 'E') return count; //if exit is reached, return dummy value
         for(int i = 0; i < move.length; i++){
           if(solve(row + move[i][0], col + move[i][1], count+1) != -1){
-            return 1 + solve(row + move[i][0], col + move[i][1], count+1);
+            return 1 + solve(row + move[i][0], col + move[i][1], count+1); //adds one each time a move is successfull
           }
-          else if(maze[row + move[i][0]][col + move[i][1]] == 'E') return 1;
+          else if(maze[row + move[i][0]][col + move[i][1]] == 'E') return 1; //extra base case so the exit isn't disregarded
         }
-        undoMove(row, col);
+        undoMove(row, col); //undo the move if path fails
         return -1; //so it compiles
 
     }
