@@ -138,7 +138,7 @@ public class Maze{
           }
         }
       }
-      return solve(rowS, colS); //and start solving at the location of the s.
+      return solve(rowS, colS, 0); //and start solving at the location of the s.
     }
 
     /*
@@ -158,7 +158,7 @@ public class Maze{
 
         All visited spots that are part of the solution are changed to '@'
     */
-    private int solve(int row, int col){ //you can add more parameters since this is private
+    private int solve(int row, int col, int count){ //you can add more parameters since this is private
 
 
         //automatic animation! You are welcome.
@@ -171,17 +171,18 @@ public class Maze{
         }
 
         //COMPLETE SOLVE
-        int count = 0;
+        //int count = 0;
         if(!makeMove(row, col)) return -1;
         if(maze[row][col] == 'E') return count;
         for(int i = 0; i < move.length; i++){
-          if(solve(row + move[i][0], col + move[i][1]) != -1){
-            return 1 + solve(row + move[i][0], col + move[i][1]);
+          if(solve(row + move[i][0], col + move[i][1], count+1) != -1){
+            return 1 + solve(row + move[i][0], col + move[i][1], count+1);
           }
-          if(maze[row + move[i][0]][col + move[i][1]] == 'E') return 1;
+          else if(maze[row + move[i][0]][col + move[i][1]] == 'E') return 1;
         }
         undoMove(row, col);
         return -1; //so it compiles
+
     }
 
 
