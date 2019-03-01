@@ -171,15 +171,30 @@ public class Maze{
         }
 
         //COMPLETE SOLVE
-        if(maze[row][col] == 'E') return count; //check if we're already on E
-        if(!makeMove(row, col)) return -1; //if the path cannot be found
-        if(maze[row][col] == 'E') return count; //check after move if we're on E
+        boolean x = true;
+        if(maze[row][col] == 'E'){
+          System.out.println(count + "line 176");
+
+          return count; //check if we're already on E
+        }
+        if(!makeMove(row, col)){
+          System.out.println(count + " " + row + " " + col);
+          return -1; //if the path cannot be found
+        }
+        if(maze[row][col] == 'E') {
+          System.out.println(count + " " + row + " " + col);
+          return count; //check after move if we're on E
+        }
         for(int i = 0; i < move.length; i++){
           if(solve(row + move[i][0], col + move[i][1], count+1) != -1){
-            return solve(row + move[i][0], col + move[i][1], count+1); //return the number of moves
+            System.out.println(count + " " + row + " " + col);
+            return count; //return the number of moves
+          }else{
+            x = false;
           }
         }
-        undoMove(row, col); //undo the move if path fails
+        if(!x) undoMove(row, col); //undo the move if path fails
+        System.out.println(count + " " + row + " " + col);
         return -1; //so it compiles
 
     }
@@ -189,7 +204,7 @@ public class Maze{
       try{
         Maze maze1 = new Maze("data1.dat");
         System.out.println(maze1);
-        maze1.setAnimate(true);
+        maze1.setAnimate(false);
         System.out.println(maze1.solve());
         System.out.println(maze1);
       }catch(FileNotFoundException e){
