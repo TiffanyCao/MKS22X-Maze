@@ -178,6 +178,7 @@ public class Maze{
           if(solve(row + move[i][0], col + move[i][1]) != -1){
             return 1 + solve(row + move[i][0], col + move[i][1]);
           }
+          if(maze[row + move[i][0]][col + move[i][1]] == 'E') return 1;
         }
         undoMove(row, col);
         return -1; //so it compiles
