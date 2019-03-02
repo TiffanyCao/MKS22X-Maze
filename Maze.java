@@ -173,28 +173,28 @@ public class Maze{
         //COMPLETE SOLVE
         boolean x = true;
         if(maze[row][col] == 'E'){
-          System.out.println(count + "line 176");
+          System.out.println(count + " line 176");
 
           return count; //check if we're already on E
         }
         if(!makeMove(row, col)){
-          System.out.println(count + " " + row + " " + col);
+          System.out.println(count + " line 181");
           return -1; //if the path cannot be found
         }
         if(maze[row][col] == 'E') {
-          System.out.println(count + " " + row + " " + col);
+          System.out.println(count + " line 185");
           return count; //check after move if we're on E
         }
         for(int i = 0; i < move.length; i++){
           if(solve(row + move[i][0], col + move[i][1], count+1) != -1){
-            System.out.println(count + " " + row + " " + col);
+            System.out.println(count + " line 190");
             return count; //return the number of moves
           }else{
             x = false;
           }
         }
         if(!x) undoMove(row, col); //undo the move if path fails
-        System.out.println(count + " " + row + " " + col);
+        System.out.println(count + " line 197");
         return -1; //so it compiles
 
     }
