@@ -203,7 +203,7 @@ public class Maze{
       try{
         Maze maze1 = new Maze("data1.dat");
         System.out.println(maze1);
-        maze1.setAnimate(true);
+        maze1.setAnimate(false);
         System.out.println(maze1.solve());
         System.out.println(maze1);
       }catch(FileNotFoundException e){
