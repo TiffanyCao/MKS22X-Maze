@@ -5,7 +5,7 @@ public class Maze{
 
 
     private char[][]maze;
-    private boolean animate;//false by default
+    private boolean animate; //false by default
 
     /*Constructor loads a maze text file, and sets animate to false by default.
 
@@ -40,18 +40,21 @@ public class Maze{
       int numE = 0;
       int numS = 0;
       Scanner read = new Scanner(text);
-      maze = new char[numLines][numCols];
-      for(int i = 0; i < numLines; i++){ //convert the text into a 2D char array
+      maze = new char[numLines][numCols]; //create 2D array maze
+      for(int i = 0; i < numLines; i++){
         String line = read.nextLine();
         for(int y = 0; y < numCols; y++){
           if(line.charAt(y) == 'E') numE++; //check number of E's
           if(line.charAt(y) == 'S') numS++; //check number of S's
-          maze[i][y] = line.charAt(y);
+          maze[i][y] = line.charAt(y); //fill in the 2D array with the characters of the text
         }
       }
-      if(numE != 1 || numS != 1) throw new IllegalStateException();
+      if(numE != 1 || numS != 1) throw new IllegalStateException(); //if the number of E's or S's isn't right
     }
 
+    /**A method that converts the 2D char array into a string to aid with printing
+    *@return String result
+    */
     public String toString(){
       String result = "";
       for(int i = 0; i < maze.length; i++){
@@ -71,7 +74,9 @@ public class Maze{
          }
      }
 
-
+    /**A method that changes the boolean value of animate
+    *@param boolean b can be true or false
+    */
     public void setAnimate(boolean b){
 
         animate = b;
@@ -85,14 +90,6 @@ public class Maze{
 
         System.out.println("\033[2J\033[1;1H");
 
-    }
-
-    private boolean isFull(){
-      for(int i = 0; i < maze.length; i++){
-        for(int y = 0; y < maze[i].length; y++){
-          if(maze[i][y] == '@' || maze[i][y] == ' ') return false;
-        }
-      } return true;
     }
 
     private int[][] move = {{0, -1},
@@ -196,18 +193,5 @@ public class Maze{
         }
         undoMove(row, col); //undo the move if path fails
         return -1; //so it compiles
-    }
-
-
-    public static void main(String[] args){
-      try{
-        Maze maze1 = new Maze("data1.dat");
-        System.out.println(maze1);
-        maze1.setAnimate(false);
-        System.out.println(maze1.solve());
-        System.out.println(maze1);
-      }catch(FileNotFoundException e){
-        System.out.println("File not found");
-      }
     }
 }
