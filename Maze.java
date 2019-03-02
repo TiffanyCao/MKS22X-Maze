@@ -100,29 +100,38 @@ public class Maze{
                             {0, 1},
                             {1, 0}};
 
+    /**A method that checks if a square of the maze is available or empty
+    *The character '@' is placed on the square
+    *@param int row
+    *@param int col
+    *@return boolean
+    */
     private boolean makeMove(int row, int col){
-      //int newRow = row + move[moveNum][0];
-      //int newCol = col + move[moveNum][1];
-      if(row >= 0 && row < maze.length && col >= 0 && col < maze[0].length){
-           if(maze[row][col] == ' '){
-             maze[row][col] = '@';
+      if(row >= 0 && row < maze.length && col >= 0 && col < maze[0].length){ //check if it's within bounds
+           if(maze[row][col] == ' '){ //checks if it's empty
+             maze[row][col] = '@'; //place '@'
              return true;
            }
          }
       return false;
     }
 
+    /**A method that undos a move by placing the character '@' on the square
+    *@param int row
+    *@param int col
+    *@return boolean
+    */
     private boolean undoMove(int row, int col){
-      if(maze[row][col] != '@') return false;
-      maze[row][col] = '.';
+      if(maze[row][col] != '@') return false; //checks if the square was marked
+      maze[row][col] = '.'; //remarks the square
       return true;
     }
 
-    /*Wrapper Solve Function returns the helper function
+    /**Wrapper Solve Function returns the helper function
 
       Note the helper function has the same name, but different parameters.
       Since the constructor exits when the file is not found or is missing an E or S, we can assume it exists.
-
+    *@return int the number of moves
     */
     public int solve(){
 
@@ -141,7 +150,7 @@ public class Maze{
       return solve(rowS, colS, 0); //and start solving at the location of the s.
     }
 
-    /*
+    /**
       Recursive Solve function:
 
       A solved maze has a path marked with '@' from S to E.
@@ -157,6 +166,11 @@ public class Maze{
         All visited spots that were not part of the solution are changed to '.'
 
         All visited spots that are part of the solution are changed to '@'
+
+    *@param int row
+    *@param int col
+    *@param int count keeps track of how many moves there have been
+    *@return int count
     */
     private int solve(int row, int col, int count){ //you can add more parameters since this is private
 
@@ -171,17 +185,17 @@ public class Maze{
         }
 
         //COMPLETE SOLVE
-        if(maze[row][col] == 'E') return count; //check if we're already on E
-        if(!makeMove(row, col)) return -1; //if the path cannot be found
-        if(maze[row][col] == 'E') return count; //check after move if we're on E
-        for(int i = 0; i < move.length; i++){
-          if(solve(row + move[i][0], col + move[i][1], count+1) != -1){
-            return solve(row + move[i][0], col + move[i][1], count+1); //return the number of moves
+        if(maze[row][col] == 'E') return count; //check if we're on E and return the number of moves
+        if(!makeMove(row, col)) return -1; //if the path cannot be found, the function stops
+        int test;
+        for(int i = 0; i < move.length; i++){ //loops through possible moves
+          test = solve(row + move[i][0], col + move[i][1], count + 1); //try next move
+          if(test != -1){
+            return test; //return the number of moves (aka count) if the function doesn't result in -1
           }
         }
         undoMove(row, col); //undo the move if path fails
         return -1; //so it compiles
-
     }
 
 
